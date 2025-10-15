@@ -11,9 +11,9 @@ phases:
     tasks:
       - type: shell
         exec: compile
-      # - type: go
-      #   exec: DockerBuild
-  deploy:
-    tasks:
-      - type: shell
-        exec: deploy
+      - type: go
+        exec: DockerBuild
+  # deploy:
+  #   tasks:
+  #     - type: shell
+  #       exec: deploy

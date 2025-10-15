@@ -29,7 +29,7 @@ func DockerBuild(
 	notes := myctx.Get[string](ctx, myctx.Notes)
 
 	srcDir := fmt.Sprintf("%s/%s", envVars["SUB_PROJECT_DIR"], envVars["SRC_DIR"])
-	dockerfile := fmt.Sprintf("Dockerfile.%s", envVars["CI_ENVIRONMENT_NAME"])
+	dockerfile := fmt.Sprintf("Dockerfile.%s", GetRelease(envVars["CI_ENVIRONMENT_NAME"]))
 	imageRef := fmt.Sprintf("%s:%s", envVars["REGISTRY_IMAGE"], envVars["IMAGE_VERSION"])
 
 	log.Info().Str("image", imageRef).Str("dockerfile", dockerfile).Str("src", srcDir).Msg("Starting Docker build")
