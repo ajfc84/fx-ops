@@ -9,24 +9,24 @@ import (
 
 func CheckEnvironment() {
 	var (
-		// socket,
+		socket,
 		home string
 	)
 	switch runtime.GOOS {
 	case "linux":
-		// socket = "/var/run/docker.sock"
+		socket = "/var/run/docker.sock"
 		home = os.Getenv("HOME")
 	case "windows":
-		// socket = `//./pipe/docker_engine`
+		socket = `//./pipe/docker_engine`
 		home = os.Getenv("USERPROFILE")
 	default:
 		panic("unsupported OS: " + runtime.GOOS)
 	}
 
-	// if _, err := os.Stat(socket); err != nil {
-	// 	fmt.Printf("ERROR: Docker socket not found at %s\n", socket)
-	// 	os.Exit(1)
-	// }
+	if _, err := os.Stat(socket); err != nil {
+		fmt.Printf("ERROR: Docker socket not found at %s\n", socket)
+		os.Exit(1)
+	}
 
 	sshDir := filepath.Join(home, ".ssh")
 	if _, err := os.Stat(sshDir); err != nil {
