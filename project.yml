@@ -1,9 +1,10 @@
 env:
   global:
     CI_PROJECT_NAME: fx-ops
-    REGISTRY_IMAGE: ajfc84/gitlab-default
-    CI_REGISTRY: registry-1.docker.io
-    CI_REGISTRY_USER: ajfc84
+    REGISTRY_IMAGE: "${CI_PROJECT_PATH}/${CI_PROJECT_NAME}"
+    # REGISTRY_IMAGE: ajfc84/gitlab-default
+    # CI_REGISTRY: registry-1.docker.io
+    # CI_REGISTRY_USER: ajfc84
     SRC_DIR: src
 phases:
   build:
