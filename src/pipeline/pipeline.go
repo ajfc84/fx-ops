@@ -7,6 +7,7 @@ import (
 	"fx-ops/utils/env"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/docker/docker/client"
 	"github.com/rs/zerolog/log"
@@ -50,6 +51,7 @@ func Pipeline(
 		stages = specsCfg.Stages[args.Phase]
 		projects = specsCfg.Projects
 	}
+	envVars["IS_RELEASE"] = strconv.FormatBool(isMultiProject)
 
 	for _, stage := range stages {
 		for _, project := range projects {
@@ -103,7 +105,9 @@ func Pipeline(
 		}
 
 		if stage == "build" {
-			utils.GitTag(notes, envVars)
+			if isMultiProject {
+				utils.GitTag(notes, envVars)
+			}
 		}
 
 		lg.Info().Msg("stage completed successfully")

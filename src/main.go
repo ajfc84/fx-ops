@@ -9,6 +9,7 @@ import (
 	"fx-ops/pipeline"
 	"fx-ops/utils"
 	"fx-ops/utils/env"
+	"fx-ops/utils/git"
 
 	"github.com/docker/docker/client"
 	"github.com/rs/zerolog"
@@ -66,8 +67,12 @@ func main() {
 	envVars = env.ExpandVars(envVars)
 	env.LogEnvVars(envVars)
 
+	if err := git.EnsureGitIdentity(envVars); err != nil {
+		os.Exit(1)
+	}
+
 	if args.Install {
-		log.Warn().Msg("Installing dependencies (TODO: implement buildSh/setup.sh equivalent)")
+		log.Warn().Msg("Installing dependencies (TODO: implement buildSh/install.sh equivalent)")
 	}
 
 	switch args.Phase {

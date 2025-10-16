@@ -14,12 +14,16 @@ maven_deploy()
 maven_install()
 {
     image_version="$1"
+    is_release="$2"
 
     CWD=$(pwd)
     cd "${SUB_PROJECT_DIR}"
 
-    mvn versions:set -DnewVersion="${image_version}"
-    mvn versions:commit
+    if [ "${is_release}" == "true" ];
+    then
+        mvn versions:set -DnewVersion="${image_version}"
+        mvn versions:commit
+    fi
     mvn -DskipTests clean install
 
     cd "${CWD}"
