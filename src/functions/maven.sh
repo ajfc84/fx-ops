@@ -19,10 +19,13 @@ maven_install()
     CWD=$(pwd)
     cd "${SUB_PROJECT_DIR}"
 
-    if [ "${is_release}" == "true" ];
+    if [ "${is_release}" = "true" ];
     then
         mvn versions:set -DnewVersion="${image_version}"
         mvn versions:commit
+    else
+        mvn versions:set -DnewVersion="${image_version}"
+        mvn versions:revert
     fi
     mvn -DskipTests clean install
 
