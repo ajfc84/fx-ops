@@ -34,9 +34,10 @@ func main() {
 		log.Warn().Err(err).Msg("Could not fetch tags from remote. Using local tags.")
 	}
 
+	project_dir, _ := os.Getwd()
 	ciVars := map[string]string{
 		"CI_ENVIRONMENT_NAME": utils.GetGitBranch(),
-		"CI_PROJECT_DIR":      "/workspaces",
+		"CI_PROJECT_DIR":      project_dir,
 		"CI_PROJECT_NAME":     "fx",
 	}
 	version, err := utils.Version(ciVars["CI_ENVIRONMENT_NAME"], false) // TODO patch

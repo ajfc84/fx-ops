@@ -5,7 +5,6 @@ import (
 	"fx-ops/myctx"
 	"fx-ops/utils"
 	"fx-ops/utils/env"
-	"os"
 	"path/filepath"
 	"strconv"
 
@@ -22,7 +21,6 @@ func Pipeline(
 	secrets := myctx.Get[map[string]string](ctx, myctx.Secrets)
 	specsCfg := myctx.Get[*utils.SpecsData](ctx, myctx.Config)
 
-	envVars["CI_PROJECT_DIR"], _ = os.Getwd()
 	utils.PrintBannerPipeline()
 
 	lg := log.With().Str("component", "pipeline").Str("stage", args.Phase).Logger()
