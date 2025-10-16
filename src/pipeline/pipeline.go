@@ -105,6 +105,9 @@ func Pipeline(
 		if stage == "build" {
 			if isMultiProject {
 				utils.GitTag(notes, envVars)
+				envVars["IMAGE_VERSION"], _ = utils.Version(envVars["CI_ENVIRONMENT_NAME"], false)
+				envVars["LATEST_VERSION"], _ = utils.LatestVersion(envVars["CI_ENVIRONMENT_NAME"])
+				envVars["RELEASE_VERSION"], _ = utils.ReleaseVersion()
 			}
 		}
 
