@@ -30,8 +30,8 @@ func EnsureGitIdentity(envVars map[string]string) error {
 		lg.Error().Msg("missing git identity (user.name or user.email)")
 		fmt.Fprintln(os.Stderr, `
 Run:
-  git config --global user.name "Your Name"
-  git config --global user.email "you@example.com"
+  git config user.name "Your Name"
+  git config user.email "you@example.com"
 `)
 		os.Exit(1)
 	}
