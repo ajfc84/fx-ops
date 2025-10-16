@@ -27,53 +27,54 @@ func ExtractNotes(changelogPath, version string) (string, error) {
 	}
 	defer file.Close()
 
-	lg.Debug().Msg("reading changelog file")
+	scanner := bufio.NewScanner(file)
 
-	inVersionSection := false
-	inNotesBlock := false
+	inVersion := false
+	inNotes := false
 	var notes []string
 
-	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
+		trimmed := strings.TrimSpace(line)
 
-		if strings.TrimSpace(line) == versionHeader {
-			inVersionSection = true
+		// Found the target version header
+		if trimmed == versionHeader {
+			inVersion = true
 			continue
 		}
 
-		if inVersionSection {
-			switch strings.TrimSpace(line) {
-			case "---":
-				if !inNotesBlock {
-					inNotesBlock = true
-					continue
-				} else {
-					inNotesBlock = false
-					break
-				}
-			default:
-				if inNotesBlock {
-					notes = append(notes, line)
-				}
+		// Skip until we reach target version
+		if !inVersion {
+			continue
+		}
+
+		// If we hit a new version header after our section -> stop
+		if strings.HasPrefix(trimmed, "### **Version") && trimmed != versionHeader {
+			break
+		}
+
+		// Start and stop block
+		if trimmed == "---" {
+			if !inNotes {
+				inNotes = true
+				continue
+			} else {
+				break // stop after closing this notes block
 			}
+		}
+
+		if inNotes {
+			notes = append(notes, line)
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		lg.Error().Err(err).Msg("failed while reading changelog")
-		return "", fmt.Errorf("failed to read changelog '%s': %w", changelogPath, err)
+		return "", fmt.Errorf("failed reading changelog: %w", err)
 	}
 
 	if len(notes) == 0 {
-		lg.Warn().Msgf("no notes found for version %s", version)
-		return "", fmt.Errorf("notes for version %s not found", version)
+		return "", fmt.Errorf("no notes found for version %s", version)
 	}
 
-	notesText := strings.TrimSpace(strings.Join(notes, "\n"))
-	lg.Info().
-		Int("lines", len(notes)).
-		Msg("notes extracted successfully")
-
-	return notesText, nil
+	return strings.TrimSpace(strings.Join(notes, "\n")), nil
 }
