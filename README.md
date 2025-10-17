@@ -1,4 +1,5 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Toni%20Felizardo-blue?style=flat&logo=linkedin)](https://linkedin.com/in/antonio-campos-b67524180)
+[![Upwork](https://img.shields.io/badge/Upwork-Toni%20Felizardo-6fda44?style=flat&logo=upwork)](https://www.upwork.com/freelancers/~0123bd7537de3b9c5b)
 
 ---
 
