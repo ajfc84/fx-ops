@@ -56,7 +56,6 @@ func main() {
 		"IMAGE_VERSION":   version,
 		"LATEST_VERSION":  latest_version,
 		"RELEASE_VERSION": release_version,
-		"BASE_DIR":        "${CI_PROJECT_DIR}",
 		"SECRETS_FILE":    "secrets",
 	}
 	envVars := env.MergeEnv(opsVars, ciVars)
