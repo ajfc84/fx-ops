@@ -27,15 +27,16 @@ func Pipeline(
 
 	lg.Info().Msg("Starting pipeline")
 
-	stages, ok := specsCfg.Pipelines[args.Stage]
-	if !ok {
-		lg.Error().Str("pipeline", args.Stage).Msg("Pipeline not defined")
-		utils.PrintUsage()
-		return
-	}
 	isMultiProject := args.Project == ""
+	stages := []string{args.Stage}
 	projects := []string{args.Project}
 	if isMultiProject {
+		stages = specsCfg.Pipelines[args.Stage]
+		if len(stages) == 0 {
+			lg.Error().Str("pipeline", args.Stage).Msg("Pipeline not defined")
+			utils.PrintUsage()
+			return
+		}
 		projects = specsCfg.Projects
 	}
 
