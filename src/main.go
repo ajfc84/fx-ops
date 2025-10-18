@@ -30,10 +30,6 @@ func main() {
 	args := utils.ParseArgs()
 	utils.CheckEnvironment()
 
-	if err := utils.GitFetchTags(); err != nil {
-		log.Warn().Err(err).Msg("Could not fetch tags from remote. Using local tags.")
-	}
-
 	project_dir, _ := os.Getwd()
 	ciVars := map[string]string{
 		"CI_ENVIRONMENT_NAME": utils.GetGitBranch(),
@@ -67,12 +63,16 @@ func main() {
 	envVars = env.ExpandVars(envVars)
 	env.LogEnvVars(envVars)
 
+	if args.Install {
+		log.Warn().Msg("Installing dependencies (TODO: implement buildSh/install.sh equivalent)")
+	}
+
 	if err := git.EnsureGitIdentity(envVars); err != nil {
 		os.Exit(1)
 	}
 
-	if args.Install {
-		log.Warn().Msg("Installing dependencies (TODO: implement buildSh/install.sh equivalent)")
+	if err := utils.GitFetchTags(envVars); err != nil {
+		log.Warn().Err(err).Msg("Could not fetch tags from remote. Using local tags.")
 	}
 
 	switch args.Stage {

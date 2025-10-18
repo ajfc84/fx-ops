@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func GitFetchTags() error {
+func GitFetchTags(envVars map[string]string) error {
 	repo, err := git.PlainOpen(".")
 	if err != nil {
 		return fmt.Errorf("failed to open repository: %w", err)
@@ -27,7 +27,7 @@ func GitFetchTags() error {
 	}
 	keyPath := filepath.Join(home, ".ssh", "id_rsa")
 
-	auth, err := GitSSHAuth("git", keyPath)
+	auth, err := GitSSHAuth(envVars["CI_REPOSITORY_USER"], keyPath)
 	if err != nil {
 		return fmt.Errorf("failed to prepare SSH auth: %w", err)
 	}

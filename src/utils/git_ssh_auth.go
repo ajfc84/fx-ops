@@ -19,8 +19,8 @@ func GitSSHAuth(user, keyPath string) (transport.AuthMethod, error) {
 	return signer, nil
 }
 
-func GitSSHAuthAgent() (transport.AuthMethod, error) {
-	auth, err := gitssh.NewSSHAgentAuth("git")
+func GitSSHAuthAgent(user string) (transport.AuthMethod, error) {
+	auth, err := gitssh.NewSSHAgentAuth(user)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to SSH agent: %w", err)
 	}

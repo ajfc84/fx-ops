@@ -46,7 +46,7 @@ func GitTag(message string, envVars map[string]string) error {
 	}
 	keyPath := filepath.Join(home, ".ssh", "id_rsa")
 
-	auth, err := GitSSHAuth("git", keyPath)
+	auth, err := GitSSHAuth(envVars["CI_REPOSITORY_USER"], keyPath)
 	if err != nil {
 		return fmt.Errorf("failed to load SSH key: %w", err)
 	}
