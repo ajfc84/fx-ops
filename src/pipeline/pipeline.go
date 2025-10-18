@@ -33,8 +33,11 @@ func Pipeline(
 		utils.PrintUsage()
 		return
 	}
-	projects := specsCfg.Projects
 	isMultiProject := args.Project == ""
+	projects := []string{args.Project}
+	if isMultiProject {
+		projects = specsCfg.Projects
+	}
 
 	lg.Info().Msg("Running stages")
 
