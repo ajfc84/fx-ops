@@ -9,7 +9,7 @@ type CLIArgs struct {
 	Local     bool
 	Install   bool
 	Docker    bool
-	Phase     string
+	Stage     string
 	Project   string
 	ExtraArgs []string
 }
@@ -30,7 +30,7 @@ func ParseArgs() CLIArgs {
 		PrintUsage()
 		os.Exit(2)
 	}
-	args.Phase = remaining[0]
+	args.Stage = remaining[0]
 	if len(remaining) > 1 {
 		args.Project = remaining[1]
 	}

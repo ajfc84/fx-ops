@@ -75,10 +75,10 @@ func main() {
 		log.Warn().Msg("Installing dependencies (TODO: implement buildSh/install.sh equivalent)")
 	}
 
-	switch args.Phase {
+	switch args.Stage {
 	case "version":
 		version := envVars["IMAGE_VERSION"]
-		log.Info().Str("IMAGE_VERSION", version).Msg("Version stage completed")
+		log.Info().Str("IMAGE_VERSION", version).Msg("Version completed successfully")
 	case "sops":
 		log.Info().Msg("Running SOPS")
 		if err := utils.Toggle(envVars["SECRETS_FILE"]); err != nil {
@@ -86,7 +86,7 @@ func main() {
 		} else {
 			log.Info().Msg("SOPS toggle completed successfully")
 		}
-	case "build", "install", "deploy":
+	default:
 		secrets, err := utils.ReadSecrets(envVars["SECRETS_FILE"], envVars["CI_ENVIRONMENT_NAME"])
 		if err != nil {
 			log.Fatal().Err(err).Msg("failed to load secrets")
@@ -112,8 +112,5 @@ func main() {
 		} else {
 			pipeline.Pipeline(ctx)
 		}
-	default:
-		log.Warn().Str("stage", args.Phase).Msg("Unknown pipeline stage")
-		utils.PrintUsage()
 	}
 }

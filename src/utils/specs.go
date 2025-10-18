@@ -7,17 +7,17 @@ import (
 )
 
 type RootSpecMap struct {
-	Projects []string                     `yaml:"projects"`
-	Stages   map[string][]string          `yaml:"stages"`
-	Env      map[string]map[string]string `yaml:"env"`
-	Phases   map[string]PhaseSpec         `yaml:"phases"`
+	Projects  []string                     `yaml:"projects"`
+	Pipelines map[string][]string          `yaml:"pipelines"`
+	Env       map[string]map[string]string `yaml:"env"`
+	Stages    map[string]PhaseSpec         `yaml:"stages"`
 }
 
 type SpecsData struct {
-	Projects []string
-	Stages   map[string][]string
-	Env      map[string]string
-	Phases   map[string]PhaseSpec
+	Projects  []string
+	Pipelines map[string][]string
+	Env       map[string]string
+	Stages    map[string]PhaseSpec
 }
 
 type PhaseSpec struct {

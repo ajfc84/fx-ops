@@ -23,16 +23,20 @@ func Pipeline(
 
 	utils.PrintBannerPipeline()
 
-	lg := log.With().Str("component", "pipeline").Str("stage", args.Phase).Logger()
+	lg := log.With().Str("component", "pipeline").Str("stage", args.Stage).Logger()
 
 	lg.Info().Msg("Starting pipeline")
 
+	stages, ok := specsCfg.Pipelines[args.Stage]
+	if !ok {
+		lg.Error().Str("pipeline", args.Stage).Msg("Pipeline not defined")
+		utils.PrintUsage()
+		return
+	}
+	projects := specsCfg.Projects
+	isMultiProject := args.Project == ""
+
 	lg.Info().Msg("Running stages")
-	var (
-		isMultiProject bool
-		stages         []string
-		projects       []string
-	)
 
 	changelogPath := filepath.Join(envVars["CI_PROJECT_DIR"], "CHANGELOG")
 	notes, err := utils.ExtractNotes(changelogPath, envVars["IMAGE_VERSION"])
@@ -40,15 +44,6 @@ func Pipeline(
 		lg.Fatal().Err(err).Msg("no changelog notes found; tag message will be empty")
 	}
 
-	if args.Project != "" {
-		isMultiProject = false
-		stages = []string{args.Phase}
-		projects = []string{args.Project}
-	} else {
-		isMultiProject = true
-		stages = specsCfg.Stages[args.Phase]
-		projects = specsCfg.Projects
-	}
 	envVars["IS_RELEASE"] = strconv.FormatBool(isMultiProject)
 
 	for _, stage := range stages {
@@ -69,7 +64,7 @@ func Pipeline(
 			ctx = myctx.Set(ctx, myctx.Config, lSpecsCfg)
 			ctx = myctx.Set(ctx, myctx.Notes, notes)
 
-			exists, err := ExecutePhase(ctx, stage, project)
+			exists, err := ExecuteStage(ctx, stage, project)
 			if err != nil {
 				lg.Error().Err(err).Msg("Stage failed")
 				return

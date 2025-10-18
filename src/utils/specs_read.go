@@ -44,12 +44,12 @@ func ReadSpecs(specsFile, environmentName string) (*SpecsData, error) {
 		lg.Warn().Msg("no environment-specific or global vars found")
 	}
 
-	lg.Info().Int("projects_count", len(spec.Projects)).Int("stages_count", len(spec.Stages)).Int("phases", len(spec.Phases)).Int("env_vars", len(merged)).Msg("specs loaded successfully")
+	lg.Info().Int("projects_count", len(spec.Projects)).Int("stages_count", len(spec.Pipelines)).Int("stages", len(spec.Stages)).Int("env_vars", len(merged)).Msg("specs loaded successfully")
 
 	return &SpecsData{
-		Projects: spec.Projects,
-		Stages:   spec.Stages,
-		Env:      merged,
-		Phases:   spec.Phases,
+		Projects:  spec.Projects,
+		Pipelines: spec.Pipelines,
+		Env:       merged,
+		Stages:    spec.Stages,
 	}, nil
 }

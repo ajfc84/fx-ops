@@ -17,7 +17,7 @@ func PipelineDocker(
 	args := myctx.Get[utils.CLIArgs](ctx, myctx.Args)
 	envVars := myctx.Get[map[string]string](ctx, myctx.EnvVars)
 
-	log.Info().Str("phase", args.Phase).Str("project", args.Project).Msg("Starting pipeline in docker")
+	log.Info().Str("phase", args.Stage).Str("project", args.Project).Msg("Starting pipeline in docker")
 
 	projectName := "devops-pipeline"
 	registryImage := "ajfc84/gitlab-default"
@@ -45,7 +45,7 @@ func PipelineDocker(
 		projectName,
 		registryImage,
 		imageVersion,
-		args.Phase,
+		args.Stage,
 		args.Project,
 		args.ExtraArgs,
 		mounts,
