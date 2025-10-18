@@ -21,7 +21,7 @@ func ExecuteTask(ctx context.Context, task utils.TaskSpec, project, phase string
 	var err error
 	switch task.Type {
 	case "go":
-		handler, ok := utils.GoPhaseHandlers[task.Exec]
+		handler, ok := utils.GoTaskHandlers[task.Exec]
 		if !ok {
 			err = fmt.Errorf("unknown Go function: %s", task.Exec)
 			break
