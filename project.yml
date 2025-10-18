@@ -6,7 +6,7 @@ env:
     # CI_REGISTRY: registry-1.docker.io
     # CI_REGISTRY_USER: ajfc84
     SRC_DIR: src
-phases:
+stages:
   build:
     tasks:
       - type: shell
